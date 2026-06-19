@@ -110,6 +110,30 @@
   </div>
 </div>
 
+<div class="sech">자산의 본질 — 부동산 공화국, 그리고 안철수 착시</div>
+<div class="lead" style="border-left-color:var(--kr)">
+  미국 AI 쏠림은 강렬하지만, 자산의 본질은 여전히 <b>부동산</b>이다.
+  전체 토지·건물 합계는 <b>약 6조 6,476억원</b>으로 상장주식(1조 4,669억)의 <b>4.5배</b>다.
+  게다가 상장주식의 상당액은 <b>안철수 의원 한 명(1조 1,179억)</b>에 쏠려 있어, 그를 빼면
+  상장주식은 <b>3,491억</b>으로 줄고 부동산이 주식의 <span class="hs">약 19배</span>가 된다.
+  330명 전원이 부동산을 가진 반면 상장주식 보유자는 166명뿐이고, '주식이 부동산보다 많은' 사람은 5명에 불과하다.
+</div>
+<div class="grid2">
+  <div class="card">
+    <h3>자산 구성 — 종류별 합계</h3>
+    <div class="cap">
+      <span id="toggleAhn" class="chip on" style="display:inline-block">안철수 포함</span>
+      클릭해 포함/제외 전환 · 단위 억원 · 채무는 음수
+    </div>
+    <div class="chartbox" style="height:340px"><canvas id="chAsset"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>인물별 — 부동산 vs 상장주식 (주식 보유자 166명)</h3>
+    <div class="cap">대각선 위 = <span class="bd">주식형</span>, 아래 = <span class="reg kr">부동산형</span> · 양 축 로그(억원)</div>
+    <div class="chartbox" style="height:340px"><canvas id="chScatter"></canvas></div>
+  </div>
+</div>
+
 <div class="sech">탐색기 <span style="color:var(--mut);font-weight:500;font-size:13px">— 검색·정렬·필터 (취재용)</span></div>
 <div class="tabs">
   <div class="tab on" data-tab="stk">종목별</div>
@@ -170,6 +194,7 @@ const TG={'AI·반도체·빅테크':'tg-ai','양자컴퓨팅':'tg-q','우주·U
 const tgC=t=>TG[t]||'tg-etc';
 const C={tx:'#e6edf3',mut:'#8b97a6',line:'#2a323d',ov:'#4ea1ff',kr:'#ffb454',acc:'#4ea1ff',buy:'#3fb950',sell:'#f85149'};
 Chart.defaults.color=C.mut;Chart.defaults.font.family="'Pretendard',sans-serif";
+const ASSETS={"assets": {"cats": ["부동산", "예금", "상장주식", "비상장주식", "기타증권", "분양·전세권·차량", "가상자산", "기타", "채무"], "all": [664755420, 290014971, 146691973, 40648715, 10744678, 9155765, 892851, 90141170, 155648417], "noahn": [661142420, 282711558, 34905973, 40648715, 8199745, 9117975, 892851, 88288243, 154227717]}, "scatter": [{"name": "안철수", "pos": "국회의원", "re": 3613000, "st": 111786000}, {"name": "고동진", "pos": "국회의원", "re": 8181000, "st": 7500887}, {"name": "윤상현", "pos": "국회의원", "re": 2884425, "st": 5152023}, {"name": "최용훈", "pos": "수석전문위원", "re": 429634, "st": 3588688}, {"name": "황정근", "pos": "국회도서관장", "re": 5961092, "st": 2723376}, {"name": "주진우", "pos": "국회의원", "re": 3983029, "st": 1196369}, {"name": "정을호", "pos": "국회의원", "re": 947000, "st": 1187010}, {"name": "김은혜", "pos": "국회의원", "re": 20872428, "st": 1112002}, {"name": "손명수", "pos": "국회의원", "re": 1360000, "st": 1084409}, {"name": "김남근", "pos": "국회의원", "re": 866045, "st": 803862}, {"name": "소병훈", "pos": "국회의원", "re": 717870, "st": 671734}, {"name": "이철규", "pos": "국회의원", "re": 5808293, "st": 609165}, {"name": "박철호", "pos": "관리관", "re": 200000, "st": 490234}, {"name": "박덕흠", "pos": "국회의원", "re": 32347690, "st": 480094}, {"name": "유용원", "pos": "국회의원", "re": 3394000, "st": 468699}, {"name": "한지아", "pos": "국회의원", "re": 5637744, "st": 389411}, {"name": "박정훈", "pos": "국회의원", "re": 4313183, "st": 383420}, {"name": "정태호", "pos": "국회의원", "re": 1308644, "st": 328734}, {"name": "김희정", "pos": "국회의원", "re": 4018221, "st": 305143}, {"name": "민형배", "pos": "국회의원", "re": 1058499, "st": 297994}, {"name": "김윤", "pos": "국회의원", "re": 2553000, "st": 272286}, {"name": "진선희", "pos": "입법차장", "re": 3735593, "st": 269450}, {"name": "한민수", "pos": "국회의원", "re": 500000, "st": 258347}, {"name": "정연욱", "pos": "국회의원", "re": 655000, "st": 252357}, {"name": "조인철", "pos": "국회의원", "re": 1400000, "st": 204693}, {"name": "이신우", "pos": "수석전문위원", "re": 1199671, "st": 188715}, {"name": "안도걸", "pos": "국회의원", "re": 5210800, "st": 180867}, {"name": "곽현", "pos": "수석비서관", "re": 336386, "st": 171170}, {"name": "이인선", "pos": "국회의원", "re": 2164016, "st": 150913}, {"name": "박충권", "pos": "국회의원", "re": 4587492, "st": 149677}, {"name": "허병조", "pos": "법률정보실장", "re": 1430796, "st": 148880}, {"name": "최수진", "pos": "국회의원", "re": 3888751, "st": 147180}, {"name": "김건", "pos": "국회의원", "re": 2008382, "st": 140035}, {"name": "박희승", "pos": "국회의원", "re": 2223368, "st": 139665}, {"name": "최민희", "pos": "국회의원", "re": 494000, "st": 135012}, {"name": "정성국", "pos": "국회의원", "re": 556000, "st": 115647}, {"name": "서미화", "pos": "국회의원", "re": 583389, "st": 114649}, {"name": "정순임", "pos": "수석전문위원", "re": 2248484, "st": 108494}, {"name": "김소희", "pos": "국회의원", "re": 559514, "st": 97572}, {"name": "안상훈", "pos": "국회의원", "re": 4933409, "st": 96217}, {"name": "강경숙", "pos": "국회의원", "re": 915470, "st": 85064}, {"name": "홍지숙", "pos": "정책연구위원", "re": 1134000, "st": 83466}, {"name": "양문석", "pos": "국회의원", "re": 1105000, "st": 82666}, {"name": "김성회", "pos": "국회의원", "re": 1014000, "st": 82107}, {"name": "박성준", "pos": "국회의원", "re": 1883313, "st": 75343}, {"name": "이용선", "pos": "국회의원", "re": 810698, "st": 74581}, {"name": "이주영", "pos": "국회의원", "re": 1652335, "st": 71118}, {"name": "박균택", "pos": "국회의원", "re": 4724337, "st": 69456}, {"name": "유동수", "pos": "국회의원", "re": 779593, "st": 69365}, {"name": "박선원", "pos": "국회의원", "re": 1002369, "st": 67183}, {"name": "백선희", "pos": "국회의원", "re": 791500, "st": 62867}, {"name": "김준혁", "pos": "국회의원", "re": 1427680, "st": 61540}, {"name": "한기호", "pos": "국회의원", "re": 3044000, "st": 60969}, {"name": "신동욱", "pos": "국회의원", "re": 3212013, "st": 60503}, {"name": "권영진", "pos": "국회의원", "re": 1216066, "st": 59063}, {"name": "박정하", "pos": "국회의원", "re": 965000, "st": 55261}, {"name": "서지영", "pos": "국회의원", "re": 1362000, "st": 54897}, {"name": "김기웅", "pos": "국회의원", "re": 1442031, "st": 53810}, {"name": "서천호", "pos": "국회의원", "re": 2448068, "st": 51181}, {"name": "백종헌", "pos": "국회의원", "re": 19577289, "st": 50199}, {"name": "박상혁", "pos": "국회의원", "re": 1014000, "st": 49814}, {"name": "성일종", "pos": "국회의원", "re": 2842697, "st": 46851}, {"name": "이복우", "pos": "수석전문위원", "re": 3153278, "st": 45573}, {"name": "권칠승", "pos": "국회의원", "re": 315000, "st": 43793}, {"name": "백승아", "pos": "국회의원", "re": 410500, "st": 39567}, {"name": "박해철", "pos": "국회의원", "re": 812841, "st": 35521}, {"name": "김재섭", "pos": "국회의원", "re": 442170, "st": 33363}, {"name": "현은희", "pos": "의회정보실장", "re": 806000, "st": 32942}, {"name": "송석준", "pos": "국회의원", "re": 1143127, "st": 32404}, {"name": "곽상언", "pos": "국회의원", "re": 3459553, "st": 30538}, {"name": "서명옥", "pos": "국회의원", "re": 19842295, "st": 29675}, {"name": "김철빈", "pos": "정책연구위원", "re": 350000, "st": 29536}, {"name": "김건오", "pos": "수석전문위원", "re": 1534000, "st": 29364}, {"name": "이옥순", "pos": "수석전문위원", "re": 581371, "st": 29053}, {"name": "박수영", "pos": "국회의원", "re": 2197808, "st": 28726}, {"name": "김대식", "pos": "국회의원", "re": 1861066, "st": 28106}, {"name": "박희석", "pos": "수석전문위원", "re": 3243508, "st": 27344}, {"name": "문대림", "pos": "국회의원", "re": 939912, "st": 26582}, {"name": "지동하", "pos": "예산정책처장", "re": 2447000, "st": 26433}, {"name": "정혜경", "pos": "국회의원", "re": 252125, "st": 25790}, {"name": "장지원", "pos": "법제실장", "re": 1313000, "st": 25274}, {"name": "임미애", "pos": "국회의원", "re": 647797, "st": 25153}, {"name": "서일준", "pos": "국회의원", "re": 1773322, "st": 24477}, {"name": "모경종", "pos": "국회의원", "re": 260000, "st": 23361}, {"name": "맹성규", "pos": "국회의원", "re": 841274, "st": 23241}, {"name": "한병도", "pos": "국회의원", "re": 232293, "st": 23159}, {"name": "강명구", "pos": "국회의원", "re": 180000, "st": 22115}, {"name": "이종배", "pos": "국회의원", "re": 2077705, "st": 21675}, {"name": "진성준", "pos": "국회의원", "re": 1256500, "st": 21110}, {"name": "박태서", "pos": "수석비서관", "re": 1565000, "st": 21039}, {"name": "윤종오", "pos": "국회의원", "re": 484784, "st": 20755}, {"name": "허성무", "pos": "국회의원", "re": 2306158, "st": 19905}, {"name": "박홍배", "pos": "국회의원", "re": 1120752, "st": 19702}, {"name": "진선미", "pos": "국회의원", "re": 300000, "st": 19304}, {"name": "이정헌", "pos": "국회의원", "re": 1043000, "st": 19021}, {"name": "유상범", "pos": "국회의원", "re": 2723000, "st": 18495}, {"name": "이강일", "pos": "국회의원", "re": 1109000, "st": 17301}, {"name": "이정은", "pos": "수석전문위원", "re": 2205000, "st": 15743}, {"name": "최선영", "pos": "수석전문위원", "re": 2205000, "st": 15743}, {"name": "이달희", "pos": "국회의원", "re": 840000, "st": 15459}, {"name": "김문수", "pos": "국회의원", "re": 442790, "st": 15327}, {"name": "양부남", "pos": "국회의원", "re": 3442502, "st": 15250}, {"name": "이건태", "pos": "국회의원", "re": 1812489, "st": 15060}, {"name": "정청래", "pos": "국회의원", "re": 792000, "st": 14163}, {"name": "김용태", "pos": "국회의원", "re": 2113592, "st": 13816}, {"name": "조정훈", "pos": "국회의원", "re": 2440100, "st": 13799}, {"name": "문금주", "pos": "국회의원", "re": 365000, "st": 13731}, {"name": "권향엽", "pos": "국회의원", "re": 602000, "st": 13708}, {"name": "이양수", "pos": "국회의원", "re": 999934, "st": 13431}, {"name": "안태준", "pos": "국회의원", "re": 741967, "st": 13326}, {"name": "이헌승", "pos": "국회의원", "re": 6517010, "st": 10519}, {"name": "김주영", "pos": "국회의원", "re": 1275499, "st": 10501}, {"name": "김미애", "pos": "국회의원", "re": 2419112, "st": 10286}, {"name": "어기구", "pos": "국회의원", "re": 607648, "st": 10233}, {"name": "문정복", "pos": "국회의원", "re": 1172173, "st": 10172}, {"name": "진종오", "pos": "국회의원", "re": 3209143, "st": 9624}, {"name": "이해식", "pos": "국회의원", "re": 1746000, "st": 9534}, {"name": "이개호", "pos": "국회의원", "re": 1210829, "st": 9150}, {"name": "최은석", "pos": "국회의원", "re": 3617596, "st": 8982}, {"name": "강민국", "pos": "국회의원", "re": 1399708, "st": 8690}, {"name": "차규근", "pos": "국회의원", "re": 1200000, "st": 8574}, {"name": "김용만", "pos": "국회의원", "re": 540000, "st": 8357}, {"name": "문진석", "pos": "국회의원", "re": 1586154, "st": 8015}, {"name": "이성원", "pos": "정책연구위원", "re": 2768583, "st": 8010}, {"name": "송언석", "pos": "국회의원", "re": 4935871, "st": 7309}, {"name": "이재관", "pos": "국회의원", "re": 1129410, "st": 6477}, {"name": "정진욱", "pos": "국회의원", "re": 385675, "st": 6022}, {"name": "노종면", "pos": "국회의원", "re": 1606918, "st": 5760}, {"name": "천준호", "pos": "국회의원", "re": 715000, "st": 5634}, {"name": "김현정", "pos": "국회의원", "re": 1392000, "st": 5310}, {"name": "김병기", "pos": "국회의원", "re": 2926625, "st": 5219}, {"name": "나경원", "pos": "국회의원", "re": 6163906, "st": 4944}, {"name": "김종수", "pos": "정책연구위원", "re": 460000, "st": 4878}, {"name": "김영진", "pos": "국회의원", "re": 425400, "st": 4530}, {"name": "박재유", "pos": "수석전문위원", "re": 3824000, "st": 4022}, {"name": "곽규택", "pos": "국회의원", "re": 4244671, "st": 3975}, {"name": "이지민", "pos": "수석전문위원", "re": 1526000, "st": 3962}, {"name": "안호영", "pos": "국회의원", "re": 525708, "st": 3385}, {"name": "신항진", "pos": "수석전문위원", "re": 260000, "st": 3262}, {"name": "정동만", "pos": "국회의원", "re": 1700283, "st": 3105}, {"name": "윤종군", "pos": "국회의원", "re": 968028, "st": 2752}, {"name": "백혜련", "pos": "국회의원", "re": 816641, "st": 2670}, {"name": "염태영", "pos": "국회의원", "re": 1663769, "st": 2573}, {"name": "유영하", "pos": "국회의원", "re": 2481374, "st": 2524}, {"name": "한정애", "pos": "국회의원", "re": 800000, "st": 2143}, {"name": "김한규", "pos": "국회의원", "re": 2824568, "st": 1956}, {"name": "정명호", "pos": "수석전문위원", "re": 696293, "st": 1952}, {"name": "이관후", "pos": "입법조사처장", "re": 2599000, "st": 1921}, {"name": "김상훈", "pos": "국회의원", "re": 1755000, "st": 1594}, {"name": "김영환", "pos": "국회의원", "re": 576000, "st": 1499}, {"name": "심정희", "pos": "수석전문위원", "re": 930000, "st": 1292}, {"name": "정춘생", "pos": "국회의원", "re": 472500, "st": 963}, {"name": "박주민", "pos": "국회의원", "re": 1400000, "st": 777}, {"name": "장동혁", "pos": "국회의원", "re": 1479227, "st": 721}, {"name": "정의찬", "pos": "정책연구위원", "re": 119301, "st": 543}, {"name": "천우정", "pos": "수석전문위원", "re": 3252000, "st": 392}, {"name": "이인영", "pos": "국회의원", "re": 465000, "st": 304}, {"name": "장경태", "pos": "국회의원", "re": 406608, "st": 254}, {"name": "허영", "pos": "국회의원", "re": 1550045, "st": 132}, {"name": "전재현", "pos": "수석비서관", "re": 433810, "st": 71}, {"name": "우재준", "pos": "국회의원", "re": 419000, "st": 51}, {"name": "강승규", "pos": "국회의원", "re": 2059266, "st": 51}, {"name": "황정아", "pos": "국회의원", "re": 844870, "st": 25}, {"name": "복기왕", "pos": "국회의원", "re": 764756, "st": 17}, {"name": "조배숙", "pos": "국회의원", "re": 2251999, "st": 13}, {"name": "추경호", "pos": "국회의원", "re": 2438000, "st": 5}]};
 
 // Flow diverging
 const fTop=F.slice(0,10), fBot=F.slice(-8).reverse();
@@ -211,6 +236,34 @@ new Chart(document.getElementById('chPpl'),{type:'bar',data:{labels:p10.map(p=>p
  options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},
   tooltip:{callbacks:{label:c=>c.raw.toLocaleString()+'만원 · '+p10[c.dataIndex].pos}}},
   scales:{x:{type:'logarithmic',grid:{color:C.line}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+// Asset composition (toggle 안철수)
+const aCats=ASSETS.assets.cats;
+const toEok=arr=>arr.map(v=>Math.round(v/10000));
+let ahnIncl=true;
+const assetColors=aCats.map(c=>c==='부동산'?C.kr:(c==='상장주식'?C.acc:(c==='채무'?C.sell:'#3a4756')));
+const chAsset=new Chart(document.getElementById('chAsset'),{type:'bar',data:{labels:aCats,
+ datasets:[{data:toEok(ASSETS.assets.all),backgroundColor:assetColors,borderRadius:4}]},
+ options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:c=>c.raw.toLocaleString()+'억원'}}},
+  scales:{x:{grid:{color:C.line},ticks:{callback:v=>v.toLocaleString()}},y:{grid:{display:false},ticks:{font:{size:12}}}}}});
+document.getElementById('toggleAhn').addEventListener('click',function(){
+ ahnIncl=!ahnIncl;
+ this.classList.toggle('on',ahnIncl);
+ this.textContent=ahnIncl?'안철수 포함':'안철수 제외';
+ chAsset.data.datasets[0].data=toEok(ahnIncl?ASSETS.assets.all:ASSETS.assets.noahn);
+ chAsset.update();
+});
+
+// Scatter 부동산 vs 주식
+const sc=ASSETS.scatter.map(p=>({x:Math.max(p.re/10000,0.3),y:Math.max(p.st/10000,0.3),name:p.name,pos:p.pos,stk:p.st>p.re}));
+new Chart(document.getElementById('chScatter'),{type:'scatter',data:{datasets:[
+  {label:'주식형(주식>부동산)',data:sc.filter(p=>p.stk),backgroundColor:C.buy,pointRadius:5,pointHoverRadius:7},
+  {label:'부동산형',data:sc.filter(p=>!p.stk),backgroundColor:'rgba(78,161,255,.55)',pointRadius:4,pointHoverRadius:6}
+]},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}},
+  tooltip:{callbacks:{label:c=>`${c.raw.name}(${c.raw.pos}) · 부동산 ${Math.round(c.raw.x).toLocaleString()}억 / 주식 ${Math.round(c.raw.y).toLocaleString()}억`}}},
+  scales:{x:{type:'logarithmic',title:{display:true,text:'부동산(억, 로그)',color:C.mut},grid:{color:C.line}},
+   y:{type:'logarithmic',title:{display:true,text:'상장주식(억, 로그)',color:C.mut},grid:{color:C.line}}}}});
 
 // Stock table
 let fTheme='all',fReg='all',fQ='',sortK='rank',asc=true;
